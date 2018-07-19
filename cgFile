@@ -1,14 +1,23 @@
-        ###set parent path ###
-path = hou.pwd()
+###set parent path ###
+path = hou.pwd().path()
+print path
 obj = hou.node("obj/pythontest/")
 
-print path
 
-        ### set name ###
-cfname = hou.ui.readInput("test",buttons =('ok',))
+
+### set name ###
+cfname = hou.ui.readInput("Name",buttons =('create outputs',))
 cfname = cfname[1]
-##print cfname
+print cfname
 
-        ### create file node ###
+### create file node ###
 cfile = obj.createNode("file",cfname)
+
+### define node params###
+
+##create rop## 
+
+
+
+### set display flag ###
 cfile.setDisplayFlag(False)
