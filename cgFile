@@ -1,23 +1,30 @@
-###set parent path ###
-path = hou.pwd().path()
-print path
-obj = hou.node("obj/pythontest/")
-
-
 
 ### set name ###
-cfname = hou.ui.readInput("Name",buttons =('create outputs',))
+
+cfname = hou.ui.readInput("Name output",buttons =('create outputs',))
 cfname = cfname[1]
 print cfname
 
-### create file node ###
-cfile = obj.createNode("file",cfname)
 
-### define node params###
+###set parent path ###
+root = hou.selectedNodes()[0]
+file = root.parent().createNode('file',cfname)
+file.setColor(hou.Color((0, 0,0)))
 
-##create rop## 
+
+file.moveToGoodPosition()
+
+###create node with input name###
+##file = root.parent().createNode('file',cfname)
+##file.setInput(0)
+##file.setColor(hou.Color((0.9, 0.75, 0.25)))
+
+
+###move and connect to parent###
+##file.moveToGoodPosition()
+
 
 
 
 ### set display flag ###
-cfile.setDisplayFlag(False)
+##file.setDisplayFlag(False)
