@@ -8,11 +8,19 @@ print cfname
 
 ###set parent path ###
 root = hou.selectedNodes()[0]
+
+null = root.parent().createNode('null','OUT_'+cfname)
+null.setColor(hou.Color((0, 0,0)))
+null.moveToGoodPosition()
+
+
 file = root.parent().createNode('file',cfname)
-file.setColor(hou.Color((0, 0,0)))
-
-
+file.setColor(hou.Color((0, 0.5,0)))
 file.moveToGoodPosition()
+
+null = root.parent().createNode('null','OUT_'+cfname+'_CACHE')
+null.setColor(hou.Color((0, 0,0)))
+null.moveToGoodPosition()
 
 ###create node with input name###
 ##file = root.parent().createNode('file',cfname)
