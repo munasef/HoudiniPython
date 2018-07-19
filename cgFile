@@ -1,0 +1,14 @@
+        ###set parent path ###
+path = hou.pwd()
+obj = hou.node("obj/pythontest/")
+
+print path
+
+        ### set name ###
+cfname = hou.ui.readInput("test",buttons =('ok',))
+cfname = cfname[1]
+##print cfname
+
+        ### create file node ###
+cfile = obj.createNode("file",cfname)
+cfile.setDisplayFlag(False)
