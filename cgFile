@@ -3,33 +3,49 @@
 
 cfname = hou.ui.readInput("Name output",buttons =('create outputs',))
 cfname = cfname[1]
-print cfname
+##print cfname
 
 
 ###set parent path ###
-root = hou.selectedNodes()[0]
- 
-null = root.parent().createNode('null','OUT_'+cfname)
-null.setColor(hou.Color((0, 0,0)))
-null.moveToGoodPosition()
+def spawn_nodes ():
+    root = hou.selectedNodes()[0]
+    
+    null0 = root.parent().createNode('null','OUT_'+cfname)
+    null0.setInput(0,root,0)
+    null0.setColor(hou.Color((0, 0,0)))
+    null0.moveToGoodPosition()
 
+    file = root.parent().createNode('file',cfname+'_filecache')
+    file.setInput(0,null0,0)
+    file.setColor(hou.Color((0, 0.5,0)))
+    file.moveToGoodPosition()
+    
+    null1 = root.parent().createNode('null','OUT_'+cfname+'_CACHE')
+    null1.setInput(0,file,0)
+    null1.setColor(hou.Color((0, 0,0)))
+    null1.moveToGoodPosition()
 
+    ### create rop ###
+    rootr = hou.node("../")
+    ropOut = rootr.createNode('geometry',cfname)
+    ropOut.moveToGoodPosition()
+    roptr = rootr.createNode('cs.jensm::tractor::1.0',cfname+'_TRACTOR')
+    roptr.setInput(0,ropOut)
+    roptr.moveToGoodPosition()
+   
+    
+    
+       
+def main():       
+    spawn_nodes ()
 
-file = root.parent().createNode('file',cfname+'_filecache')
-file.setColor(hou.Color((0, 0.5,0)))
-file.moveToGoodPosition()
-
-null = root.parent().createNode('null','OUT_'+cfname+'_CACHE')
-null.setColor(hou.Color((0, 0,0)))
-null.moveToGoodPosition()
-
-
+main()
 ###move and connect to parent###
 ##file.moveToGoodPosition()
 
 ### create rop ###
-rop = hou.node("../")
-rop.createNode('geometry',cfname).moveToGoodPosition()
-rop.createNode('cs.jensm::tractor::1.0',cfname+'_TRACTOR').moveToGoodPosition()
+##rop = hou.node("../")
+##rop.createNode('geometry',cfname).moveToGoodPosition()
+##rop.createNode('cs.jensm::tractor::1.0',cfname+'_TRACTOR').moveToGoodPosition()
 ### set display flag ###
 ##file.setDisplayFlag(False)
