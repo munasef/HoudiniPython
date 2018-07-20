@@ -1,4 +1,3 @@
-
 ### set name ###
 
 cfname = hou.ui.readInput("Name output",buttons =('create outputs',))
@@ -26,9 +25,10 @@ def spawn_nodes ():
     null1.moveToGoodPosition()
 
     ### create rop ###
-    rootr = hou.node("../")
+    rootr = hou.node("out")
     ropOut = rootr.createNode('geometry',cfname)
     ropOut.moveToGoodPosition()
+    
     roptr = rootr.createNode('cs.jensm::tractor::1.0',cfname+'_TRACTOR')
     roptr.setInput(0,ropOut)
     roptr.moveToGoodPosition()
@@ -40,6 +40,8 @@ def main():
     spawn_nodes ()
 
 main()
+
+
 ###move and connect to parent###
 ##file.moveToGoodPosition()
 
