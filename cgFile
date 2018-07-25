@@ -1,6 +1,6 @@
 ### set name ###
 
-cfname = hou.ui.readInput("Name output",buttons =('create outputs',))
+cfname = hou.ui.readInput("Name output", buttons=('create outputs',))
 cfname = cfname[1]
 ##print cfname
 
@@ -8,54 +8,50 @@ cfname = cfname[1]
 ###set parent path ###
 
 
-def spawn_obj ():
-        root = hou.selectedNodes()[0]
-        
-        null0 = root.parent().createNode('null','OUT_'+cfname)
-        null0.setInput(0,root,0)
+def spawn_obj(node):   
+        null0 = node.parent().createNode('null','OUT_'+cfname)
+        null0.setInput(0, node, 0)
         null0.setColor(hou.Color((0, 0,0)))
         null0.moveToGoodPosition()
     
-        file = root.parent().createNode('file',cfname+'_filecache')
+        file = node.parent().createNode('file',cfname+'_filecache')
         file.setInput(0,null0,0)
         file.setColor(hou.Color((0, 0.5,0)))
         file.moveToGoodPosition()
         
-        null1 = root.parent().createNode('null','OUT_'+cfname+'_CACHE')
+        null1 = node.parent().createNode('null','OUT_'+cfname+'_CACHE')
         null1.setInput(0,file,0)
         null1.setColor(hou.Color((0, 0,0)))
         null1.moveToGoodPosition()
     
-def spawn_rop ():
+
+def spawn_rop(out):
         ### create rop ###
-        rootr = hou.node("out")
-        ropOut = rootr.createNode('geometry',cfname)
+        ropOut = out.createNode('geometry', cfname)
         ropOut.moveToGoodPosition()
+        return ropOut
         
         
-def spawn_merge():
-        ### create merge ###
-       
-        ropM = rootr.createNode('merge',cfname+'_MERGE_HERE')
-        ropM.setInput(0,ropOut)
+def spawn_merge(out):
+        ### create merge ###       
+        ropM = out.createNode('merge', cfname+'_MERGE_HERE')
+        ropM.setInput(0, spawn_rop(out))
         ropM.moveToGoodPosition()
+        return ropM
+       
         
-        
+def spawn_tractor(out):        
         ### create CINESITE TRACTOR ###
-        
-        ##roptr = rootr.createNode('cs.jensm::tractor::1.0',cfname+'_TRACTOR')
-        ##roptr.setInput(0,ropM)
-        ##roptr.moveToGoodPosition()
+        roptr = out.createNode('cs.jensm::tractor::1.0',cfname+'_TRACTOR')
+        roptr.setInput(0,spawn_merge(out))
+        roptr.moveToGoodPosition()
            
 
-def spawn_nodes ():
-    spawn_obj ()
-    spawn_rop ()
-    spawn_merge ()
-    ##spawn_tractor()
+def spawn_nodes(node, out):
+    spawn_obj(node)
+    spawn_merge(out)
+    spawn_tractor(out)
     
        
-def main():       
-    spawn_nodes ()
-
-main()
+      
+spawn_nodes(hou.selectedNodes()[0], hou.node('out'))
