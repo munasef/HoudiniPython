@@ -1,35 +1,46 @@
 ## find pattern ##
 
 loc = hou.node('/obj/shot_bundle/')
-pattern = hou.ui.selectNode(relative_to_node=None,initial_node=loc, node_type_filter=hou.nodeTypeFilter.Obj)
-pattern = pattern.rsplit('/')[-1]
 
-#print pattern
+choice = hou.ui.selectFromTree([i.name() for i in loc.children() if i.type().name() == 'geo'])
 
-init = pattern.rsplit('__',1)
-init2 = init[0]+ '__' + init[1].rsplit('_',2)[0]+'_'
-#print init2
+def token(choice):
+    init = choice[0].rsplit('__',1)
+    return init[0]+ '__' + init[1].rsplit('_',2)[0]+'_'
 
-## create 
-asset = []
-
-for n in loc.children():
-    if n.name().startswith(init2):
-        asset.append(n.node('OUT'))
+    
+def createMergeFromList(asset, init2, use_custom_name=True):
+    name =  init2[ : -1] + '_merge'
+    if use_custom_name :
+        name = 'custom_merge'
         
+    geo = hou.node('/obj').createNode('geo', name)
+    geo.setPosition(loc.position() + hou.Vector2((0, -2)))
+    geo.node('file1').destroy()
+    
+    merge = geo.createNode('object_merge', name)
+    merge.setParms({'numobj' : len(asset), 'xformtype' : 1 })
+    
+    for n in range(len(asset)):
+        merge.setParms({'objpath' + str(n + 1) : asset[n].path()})
 
         
-geo = hou.node('/obj').createNode('geo', init2[ : -1] + '_merge')
-geo.setPosition(loc.position() + hou.Vector2((0, -2)))
-geo.node('file1').destroy()
+def patternSpawn():    
+    if len(choice) == 1:    
+        asset = [n.node('OUT') for n in loc.children() if n.name().startswith(token(choice))]
+                        
+        createMergeFromList(asset, token(choice), False)
+        
+        return 0
+       
+        
+    asset = [hou.node(loc.path() +'/'+ n).node('OUT') for n in choice]
+    
+    createMergeFromList(asset, token(choice), True)
+    return 0
+    
+    
+    
+patternSpawn()
 
-merge = geo.createNode('object_merge', init2[ : -1] + '_merge')
-merge.setParms({'numobj' : len(asset), 'xformtype' : 1 })
-
-for n in range(len(asset)):
-    merge.setParms({'objpath' + str(n + 1) : asset[n].path()})
-
-
-   
-
-
+ 
