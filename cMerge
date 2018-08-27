@@ -1,0 +1,35 @@
+## find pattern ##
+
+loc = hou.node('/obj/shot_bundle/')
+pattern = hou.ui.selectNode(relative_to_node=None,initial_node=loc, node_type_filter=hou.nodeTypeFilter.Obj)
+pattern = pattern.rsplit('/')[-1]
+
+#print pattern
+
+init = pattern.rsplit('__',1)
+init2 = init[0]+ '__' + init[1].rsplit('_',2)[0]+'_'
+#print init2
+
+## create 
+asset = []
+
+for n in loc.children():
+    if n.name().startswith(init2):
+        asset.append(n.node('OUT'))
+        
+
+        
+geo = hou.node('/obj').createNode('geo', init2[ : -1] + '_merge')
+geo.setPosition(loc.position() + hou.Vector2((0, -2)))
+geo.node('file1').destroy()
+
+merge = geo.createNode('object_merge', init2[ : -1] + '_merge')
+merge.setParms({'numobj' : len(asset), 'xformtype' : 1 })
+
+for n in range(len(asset)):
+    merge.setParms({'objpath' + str(n + 1) : asset[n].path()})
+
+
+   
+
+
