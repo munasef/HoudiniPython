@@ -37,7 +37,7 @@ def patternSpawn():
     asset = [hou.node(loc.path() +'/'+ n).node('OUT') for n in choice]
     
     createMergeFromList(asset, token(choice), True)
-    setStatusMessage('created merge node for selection')
+    ##setStatusMessage('created merge node for selection')
     return 0
     
     
