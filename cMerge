@@ -18,7 +18,7 @@ def createMergeFromList(asset, init2, use_custom_name=True):
         
     geo = hou.node('/obj').createNode('geo', name)
     geo.setPosition(loc.position() + hou.Vector2((0, -2)))
-    geo.node('file1').destroy()
+    ###geo.node('file1').destroy()
     
     merge = geo.createNode('object_merge', name)
     merge.setParms({'numobj' : len(asset), 'xformtype' : 1 })
