@@ -1,5 +1,5 @@
-// cMerge either matches and merges geo nodes found in /obj/shot_bundle based on their name, 
-// or allows a custom selection. Thanks to Pradeeb Barua for helping to make the script nicer. 
+###cMerge either matches and merges geo nodes found in /obj/shot_bundle based on their name, 
+###or allows a custom selection. Thanks to Pradeeb Barua for helping to make the script nicer. 
 
 loc = hou.node('/obj/shot_bundle/')
 st_message = 'select single node for pattern merge // select multiple nodes for custom merge'
