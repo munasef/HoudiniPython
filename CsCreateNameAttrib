@@ -1,0 +1,8 @@
+root = hou.node("/obj/shot_bundle/")
+for i in root.children():
+    if i.name().find("deer") != -1:
+        n = i.createNode("name")
+        n.parm('name1').set('`opname("..")`')
+        n.setFirstInput(i.node("MERGE"))
+        i.node("OUT").setFirstInput(n)
+        n.moveToGoodPosition()
