@@ -1,0 +1,9 @@
+root = hou.node("/out")
+for i in root.children() :
+    if i.type().name() == "ifd" or "geometry" :
+        i.setColor(hou.Color((0,0,0)))
+        n = root.createNode("cs.jensm::tractor::1.0","tractor_" + i.name())
+        n.setFirstInput(i)
+        n.moveToGoodPosition()
+        
+         
