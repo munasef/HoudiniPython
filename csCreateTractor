@@ -1,9 +1,21 @@
 root = hou.node("/out")
-for i in root.children() :
-    if i.type().name() == "ifd" or "geometry" :
-        i.setColor(hou.Color((0,0,0)))
-        n = root.createNode("cs.jensm::tractor::1.0","tractor_" + i.name())
-        n.setFirstInput(i)
+
+def createTractor(mantra) : 
+    outputs = []
+    
+    for n in mantra.outputs():       
+        if  n.type().name() == "cs.jensm::tractor::1.0" :   
+            
+            outputs.append(n)
+            
+    ##print outputs[0]            
+    if not len(outputs) :        
+        n = root.createNode("cs.jensm::tractor::1.0","tractor_" + mantra.name())
+        n.setFirstInput(mantra)
         n.moveToGoodPosition()
-        
-         
+    
+for i in root.children() :
+    i.setColor(hou.Color((0,0,0)))
+    if i.type().name() == "ifd" or "geometry" :
+        createTractor(i)
+               
