@@ -1,0 +1,8 @@
+// loop over shot bundle and set mescache Attributes 
+
+
+root = hou.node("/obj/shot_bundle/")
+for i in root.allNodes():
+    if i.name().startswith("IN_robot"):
+        i.parm("createGroups").set(True)
+        i.parm("createSets").set(True)
