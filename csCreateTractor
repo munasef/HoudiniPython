@@ -1,21 +1,29 @@
 root = hou.node("/out")
+##root.createNode("merge","mergeSerial").moveToGoodPosition()
 
 def createTractor(mantra) : 
     outputs = []
     
     for n in mantra.outputs():       
-        if  n.type().name() == "cs.jensm::tractor::1.0" :   
+        if  n.type().name() == "farmer" :   
             
             outputs.append(n)
             
-    ##print outputs[0]            
+    #print outputs         
     if not len(outputs) :        
-        n = root.createNode("cs.jensm::tractor::1.0","tractor_" + mantra.name())
+        n = root.createNode("farmer","farmer_" + mantra.name())
         n.setFirstInput(mantra)
         n.moveToGoodPosition()
     
 for i in root.children() :
     i.setColor(hou.Color((0,0,0)))
-    if i.type().name() == "ifd" or "geometry" :
+    if i.type().name() == "cacheOut::1.0"  or i.type().name() == "dnMantraV2"  :
+        i.setColor(hou.Color((0,0,0)))
+        #print i.type().name()
+        #print outputs 
         createTractor(i)
-               
+        
+        
+        
+        
+        
