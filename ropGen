@@ -1,0 +1,28 @@
+import hou
+
+choice = hou.ui.displayMessage('Render completed\nCreate fileSop?', buttons=('Create fileSop','Close'))
+
+
+if choice == 0:
+#   self = hou.pwd()
+    self = hou.node('/obj/geo1/null1')
+    selfName = self.name()
+    pos = self.position()
+    fileRop = hou.node('out')
+    ropName = selfName + "_CACHE"
+    
+    
+    fileRop.createNode('geometry',ropName)
+    fileRop.moveToGoodPosition()
+   ## fileRop.parm('soppath').set
+    
+    file = self.parent().createNode('file')
+   ## file.parm('file').set(
+    file.setPosition(pos)
+    file.move((0,-1))
+    
+    print selfName
+    
+    
+    
+    
