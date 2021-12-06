@@ -1,4 +1,6 @@
 import hou
+fileRop = hou.node('/out')
+
 
 choice = hou.ui.displayMessage('Render completed\nCreate fileSop?', buttons=('Create fileSop','Close'))
 
@@ -8,11 +10,12 @@ if choice == 0:
     self = hou.node('/obj/geo1/null1')
     selfName = self.name()
     pos = self.position()
-    fileRop = hou.node('out')
+    #fileRop = hou.node('out')
     ropName = selfName + "_CACHE"
+    print ropName
     
     
-    fileRop.createNode('geometry',ropName)
+    fileRop.createNode('geometry')
     fileRop.moveToGoodPosition()
    ## fileRop.parm('soppath').set
     
@@ -22,7 +25,3 @@ if choice == 0:
     file.move((0,-1))
     
     print selfName
-    
-    
-    
-    
