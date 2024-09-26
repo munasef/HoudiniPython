@@ -1,0 +1,24 @@
+
+import os
+import hou
+import subprocess
+
+# Get the current .hip file path
+filepath = hou.hipFile.path()
+
+# Check if there are unsaved changes
+file_unsaved = hou.hipFile.hasUnsavedChanges()
+
+if file_unsaved:
+    hou.ui.displayMessage("You have unsaved changes. Please save your hip file before checking in.")
+else:
+    # Add the file to Perforce
+    add_command = f"p4 add {filepath}"
+    subprocess.run(add_command, shell=True)
+
+    # Check in the file with a description
+    description = "Checked in via Houdini script"
+    checkin_command = f'p4 submit -d "{description}" {filepath}'
+    subprocess.run(checkin_command, shell=True)
+
+    hou.ui.displayMessage("File checked in to Perforce successfully.")
